@@ -15,15 +15,11 @@ import {
   FormControl,
 } from "@/components/ui/form";
 import Link from "next/link";
-
-const formSchema = z.object({
-  email: z.string().email({ message: "Invalid email" }),
-  password: z.string().min(1, { message: "Password is required" }),
-});
+import { SigninSchema } from "../schemas";
 
 export const SignInCard = () => {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof SigninSchema>>({
+    resolver: zodResolver(SigninSchema),
     mode: "onChange",
     defaultValues: {
       email: "",
@@ -31,7 +27,7 @@ export const SignInCard = () => {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
+  const onSubmit = (values: z.infer<typeof SigninSchema>) => {
     console.log(values);
   };
 
