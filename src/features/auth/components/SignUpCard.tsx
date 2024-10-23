@@ -17,15 +17,17 @@ import {
 import Link from "next/link";
 
 const formSchema = z.object({
+  name: z.string().min(1, { message: "Name is required" }),
   email: z.string().email({ message: "Invalid email" }),
   password: z.string().min(1, { message: "Password is required" }),
 });
 
-export const SignInCard = () => {
+export const SignUpCard = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     mode: "onChange",
     defaultValues: {
+      name: "",
       email: "",
       password: "",
     },
@@ -46,6 +48,19 @@ export const SignInCard = () => {
       <CardContent className="p-7">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <FormField
+              name="name"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input {...field} type="text" placeholder="Enter Name" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <FormField
               name="email"
               control={form.control}
@@ -77,7 +92,7 @@ export const SignInCard = () => {
             />
 
             <Button disabled={false} size={"lg"} className="w-full">
-              Sign In
+              Sign Up
             </Button>
           </form>
         </Form>
@@ -110,12 +125,12 @@ export const SignInCard = () => {
       </div>
       <CardContent className="p-7 ">
         <p className="text-center">
-          Don&apos;t have an account?{" "}
+          Already have an account?{" "}
           <Link
-            href="/sign-up"
+            href="/sign-in"
             className="text-blue-600 hover:underline hover:text-blue-700"
           >
-            Sign Up
+            Login
           </Link>
         </p>
       </CardContent>

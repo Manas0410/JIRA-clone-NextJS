@@ -1,6 +1,5 @@
 import React from "react";
 import { cn } from "@/lib/utils";
-import { dot } from "node:test/reporters";
 
 interface DottedSeperatorProps {
   className?: string;
@@ -20,6 +19,11 @@ export const DottedSeperator = ({
   direction = "horizontal",
 }: DottedSeperatorProps) => {
   const isHorizontal = direction === "horizontal";
+
+  // Convert dotSize and gapSize to numbers
+  const dotSizeNumber = parseInt(dotSize);
+  const gapSizeNumber = parseInt(gapSize);
+
   return (
     <div
       className={cn(
@@ -32,10 +36,10 @@ export const DottedSeperator = ({
         style={{
           width: isHorizontal ? "100%" : height,
           height: isHorizontal ? height : "100%",
-          backgroundImage: `radial-gradient(circle ,${color} 25% , transparent 25%)`,
+          backgroundImage: `radial-gradient(circle, ${color} 25%, transparent 25%)`,
           backgroundSize: isHorizontal
-            ? `${parseInt(dotSize)} + ${parseInt(gapSize)}px ${height} `
-            : `${height} ${parseInt(gapSize)} + ${parseInt(dotSize)}px`,
+            ? `${dotSizeNumber + gapSizeNumber}px ${height}`
+            : `${height} ${dotSizeNumber + gapSizeNumber}px`,
           backgroundRepeat: isHorizontal ? "repeat-x" : "repeat-y",
           backgroundPosition: "center",
         }}
