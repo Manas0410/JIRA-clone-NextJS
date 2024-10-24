@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/form";
 import Link from "next/link";
 import { SigninSchema } from "../schemas";
+import { useLogin } from "../api/use-sign-in";
 
 export const SignInCard = () => {
   const form = useForm<z.infer<typeof SigninSchema>>({
@@ -27,8 +28,9 @@ export const SignInCard = () => {
     },
   });
 
+  const { mutate } = useLogin();
   const onSubmit = (values: z.infer<typeof SigninSchema>) => {
-    console.log(values);
+    mutate({ json: values });
   };
 
   return (
