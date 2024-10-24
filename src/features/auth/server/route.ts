@@ -3,7 +3,7 @@ import { zValidator } from "@hono/zod-validator";
 import { SigninSchema, SignupSchema } from "../schemas";
 import { createAdminClient } from "@/lib/appwrite";
 import { ID } from "node-appwrite";
-import { setCookie } from "hono/cookie";
+import { setCookie, deleteCookie } from "hono/cookie";
 import { AUTH_COOKIE } from "../constants";
 
 const auth = new Hono()
@@ -32,7 +32,7 @@ const auth = new Hono()
 
     const { account } = await createAdminClient();
 
-    const user = await account.create(ID.unique(), email, password, name);
+    await account.create(ID.unique(), email, password, name);
 
     const session = await account.createEmailPasswordSession(email, password);
 
@@ -44,7 +44,13 @@ const auth = new Hono()
       sameSite: "strict",
     });
 
-    return c.json({ data: user });
+    return c.json({ success: true });
+  })
+
+  // logout
+  .post("/logout", async (c) => {
+    deleteCookie(c, AUTH_COOKIE);
+    return c.json({ success: true });
   });
 
 export default auth;
