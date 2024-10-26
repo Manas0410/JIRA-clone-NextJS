@@ -8,6 +8,11 @@ import { AUTH_COOKIE } from "../constants";
 import { sessionMiddleware } from "@/lib/session-middleware";
 
 const auth = new Hono()
+  // current user
+  .get("/current", sessionMiddleware, async (c) => {
+    const user = c.get("user");
+    return c.json({ data: user });
+  })
   // sign - in
   .post("/login", zValidator("json", SigninSchema), async (c) => {
     const { email, password } = c.req.valid("json");
