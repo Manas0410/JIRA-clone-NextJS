@@ -8,7 +8,7 @@ export const useCurrent = () => {
       const response = await client.api.auth.current["$get"]();
 
       if (!response.ok) {
-        throw null;
+        return null;
       }
 
       const { data } = await response.json();
