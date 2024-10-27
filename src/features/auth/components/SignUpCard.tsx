@@ -1,3 +1,5 @@
+"use client";
+
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
 import { DottedSeperator } from "@/components/dotted-seperator";
@@ -29,7 +31,7 @@ export const SignUpCard = () => {
     },
   });
 
-  const { mutate } = useSignup();
+  const { mutate, isPending } = useSignup();
   const onSubmit = (values: z.infer<typeof SignupSchema>) => {
     mutate({ json: values });
   };
@@ -88,7 +90,7 @@ export const SignUpCard = () => {
               )}
             />
 
-            <Button disabled={false} size={"lg"} className="w-full">
+            <Button disabled={isPending} size={"lg"} className="w-full">
               Sign Up
             </Button>
           </form>
@@ -99,7 +101,7 @@ export const SignUpCard = () => {
       </div>
       <CardContent className="p-7 flex flex-col gap-y-4">
         <Button
-          disabled={false}
+          disabled={isPending}
           size={"lg"}
           variant={"secondary"}
           className="w-full "
@@ -108,7 +110,7 @@ export const SignUpCard = () => {
           <FcGoogle className="mr-2 size-5" />
         </Button>
         <Button
-          disabled={false}
+          disabled={isPending}
           size={"lg"}
           variant={"secondary"}
           className="w-full "
