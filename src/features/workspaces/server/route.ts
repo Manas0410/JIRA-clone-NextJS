@@ -23,7 +23,7 @@ const workspaces = new Hono()
         ID.unique(),
         {
           name,
-          // userid: user.$id,
+          userid: user.$id,
         }
       );
 
