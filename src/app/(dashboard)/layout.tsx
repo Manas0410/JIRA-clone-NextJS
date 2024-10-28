@@ -1,5 +1,6 @@
 import { Navbar } from "@/components/navbar";
 import { Sidebar } from "@/components/sidebar";
+import { CreateWorkspaceModal } from "@/features/workspaces/components/create-workspace-modal";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -8,6 +9,7 @@ interface LayoutProps {
 export default function DashboardLayout({ children }: LayoutProps) {
   return (
     <section className="min-h-screen relative">
+      <CreateWorkspaceModal />
       <div className="w-full h-full flex">
         <div className="fixed left-0 bg-red-300 top-0 hidden lg:block lg:w-[264px] h-full overflow-y-auto">
           <Sidebar />
