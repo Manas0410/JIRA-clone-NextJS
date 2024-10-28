@@ -25,7 +25,7 @@ export const WorkspaceSwitcher = () => {
 
   return (
     <div className="flex flex-col gap-y-2">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between mb-4">
         <p className="text-neutral-500 uppercase text-xs">Workspaces</p>
         <RiAddCircleFill className="text-neutral-500 cursor-pointer size-5 hover:opacity-75 transition-all" />
       </div>
