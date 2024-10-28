@@ -10,6 +10,7 @@ import {
 } from "@/config";
 import { ID, Query } from "node-appwrite";
 import { MemberRole } from "@/features/members/types";
+import { generateInviteCode } from "@/lib/utils";
 
 const workspaces = new Hono()
 
@@ -79,6 +80,7 @@ const workspaces = new Hono()
           name,
           userid: user.$id,
           imageUrl: uploadedImageUrl,
+          inviteCode: generateInviteCode(10),
         }
       );
 
