@@ -3,6 +3,7 @@ import Link from "next/link";
 import React from "react";
 import { DottedSeperator } from "./dotted-seperator";
 import { Navigation } from "./navigation";
+import { WorkspaceSwitcher } from "@/features/workspaces/components/workspace-switcher";
 
 export const Sidebar = () => {
   return (
@@ -13,6 +14,8 @@ export const Sidebar = () => {
           <p>SMxCONTROLLER</p>
         </h1>
       </Link>
+      <DottedSeperator className="my-4 h-max" />
+      <WorkspaceSwitcher />
       <DottedSeperator className="my-4 h-max" />
       <Navigation />
     </aside>
