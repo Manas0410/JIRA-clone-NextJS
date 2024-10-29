@@ -19,7 +19,7 @@ import { Button } from "@/components/ui/button";
 import { useRef } from "react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import Image from "next/image";
-import { ImageIcon } from "lucide-react";
+import { ArrowLeftIcon, ImageIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Workspace } from "../types";
@@ -77,7 +77,15 @@ export const EditWorkspaceForm = ({
 
   return (
     <Card className="w-full h-full border-none shadow-none">
-      <CardHeader className="flex p-7">
+      <CardHeader className="flex p-7 flex-row items-center gap-x-4 space-y-0">
+        <Button
+          variant="secondary"
+          onClick={onCancel ? onCancel : () => router.back()}
+          size="sm"
+        >
+          <ArrowLeftIcon className="size-4 mr-2" />
+          Back
+        </Button>
         <CardTitle className="text-xl font-bold">
           {initialValues.name}
         </CardTitle>
@@ -141,16 +149,34 @@ export const EditWorkspaceForm = ({
                           disabled={isPending}
                           onChange={handleImageChange}
                         />
-                        <Button
-                          type="button"
-                          variant={"teritary"}
-                          size={"xs"}
-                          onClick={() => inputRef.current?.click()}
-                          disabled={isPending}
-                          className="w-fit mt-2"
-                        >
-                          Upload Image
-                        </Button>
+                        {field.value ? (
+                          <Button
+                            type="button"
+                            variant={"destructive"}
+                            size={"xs"}
+                            onClick={() => {
+                              field.onChange(null);
+                              if (inputRef.current) {
+                                inputRef.current.value = "";
+                              }
+                            }}
+                            disabled={isPending}
+                            className="w-fit mt-2"
+                          >
+                            Remove Image
+                          </Button>
+                        ) : (
+                          <Button
+                            type="button"
+                            variant={"teritary"}
+                            size={"xs"}
+                            onClick={() => inputRef.current?.click()}
+                            disabled={isPending}
+                            className="w-fit mt-2"
+                          >
+                            Upload Image
+                          </Button>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -175,7 +201,7 @@ export const EditWorkspaceForm = ({
                 size={"lg"}
                 variant={"primary"}
               >
-                Create Workspace
+                Save Changes
               </Button>
             </div>
           </form>

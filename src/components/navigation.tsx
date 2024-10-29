@@ -50,7 +50,7 @@ export const Navigation = () => {
         const Icon = isActive ? activeIcon : icon;
         return (
           <li key={href}>
-            <Link href={href}>
+            <Link href={fullHref}>
               <div
                 className={cn(
                   "flex items-center gap-2.5 px-2.5 py-3 rounded-md font-medium hover:text-primary transition text-neutral-500 cursor-pointer",
