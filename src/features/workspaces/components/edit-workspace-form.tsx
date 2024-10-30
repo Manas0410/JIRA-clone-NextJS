@@ -252,7 +252,7 @@ export const EditWorkspaceForm = ({
               className="mt-6 w-fit ml-auto"
               size="sm"
               type="button"
-              disabled={isPending}
+              disabled={isPending || isDeletePending}
               variant="destructive"
               onClick={() => handleDelete()}
             >
