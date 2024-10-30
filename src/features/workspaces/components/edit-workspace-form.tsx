@@ -19,13 +19,14 @@ import { Button } from "@/components/ui/button";
 import { useRef } from "react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import Image from "next/image";
-import { ArrowLeftIcon, ImageIcon } from "lucide-react";
+import { ArrowLeftIcon, CopyIcon, ImageIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Workspace } from "../types";
 import { useUpdateWorkspace } from "../api/use-update-workspace";
 import { useConfirm } from "@/hooks/use-confirm";
 import { useDeleteWorkspace } from "../api/use-delete-workspace";
+import { toast } from "sonner";
 
 interface EditWorkspaceFormProps {
   onCancel?: () => void;
@@ -92,7 +93,7 @@ export const EditWorkspaceForm = ({
       {
         onSuccess: ({ data }) => {
           form.reset();
-          router.push(`/workspaces/${data.$id}`);
+          window.location.href = `/`;
         },
       }
     );
@@ -103,6 +104,14 @@ export const EditWorkspaceForm = ({
     if (file) {
       form.setValue("image", file);
     }
+  };
+
+  const originalInviteURl = `${window.location.origin}/workspaces/${initialValues.$id}/join/${initialValues.inviteCode}`;
+
+  const handleCopyInviteLink = () => {
+    navigator.clipboard.writeText(originalInviteURl).then(() => {
+      toast.success("Invite link copied to clipboard");
+    });
   };
 
   return (
@@ -243,11 +252,47 @@ export const EditWorkspaceForm = ({
       <Card className="w-full h-full border-none shadow-none">
         <CardContent className="p-7">
           <div className="flex flex-col">
+            <h3 className=" font-bold">Invite Members</h3>
+            <p className="text-sm text-muted-foreground">
+              Use the invite link to add members to your workspace
+            </p>
+            <div className="mt-4">
+              <div className="flex items-center gap-x-2">
+                <Input disabled value={originalInviteURl} />
+                <Button
+                  className="size-12"
+                  type="button"
+                  variant={"secondary"}
+                  onClick={handleCopyInviteLink}
+                >
+                  <CopyIcon />
+                </Button>
+              </div>
+            </div>
+            <DottedSeperator className="py-7" />
+            <Button
+              className="mt-6 w-fit ml-auto"
+              size="sm"
+              type="button"
+              disabled={isPending}
+              variant="destructive"
+              onClick={() => handleDelete()}
+            >
+              Reset Invite Link
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+      <Card className="w-full h-full border-none shadow-none">
+        <CardContent className="p-7">
+          <div className="flex flex-col">
             <h3 className=" font-bold">Danger Zone</h3>
             <p className="text-sm text-muted-foreground">
               Deleting a workspace is a irreversible action and will remove all
               associated data
             </p>
+            <DottedSeperator className="py-7" />
+
             <Button
               className="mt-6 w-fit ml-auto"
               size="sm"
