@@ -27,6 +27,7 @@ import { useUpdateWorkspace } from "../api/use-update-workspace";
 import { useConfirm } from "@/hooks/use-confirm";
 import { useDeleteWorkspace } from "../api/use-delete-workspace";
 import { toast } from "sonner";
+import { useResetInviteCode } from "../api/use-reset-invite-code";
 
 interface EditWorkspaceFormProps {
   onCancel?: () => void;
@@ -114,9 +115,38 @@ export const EditWorkspaceForm = ({
     });
   };
 
+  const { mutate: resetInviteCode, isPending: isResetPending } =
+    useResetInviteCode();
+
+  const [ResestDialog, ConfirmReset] = useConfirm(
+    "Reset Invite Link",
+    "This will invalidate the current link",
+    "destructive"
+  );
+
+  const handleResetLink = async () => {
+    const ok = await ConfirmReset();
+
+    if (!ok) return;
+
+    resetInviteCode(
+      {
+        param: {
+          workspaceId: initialValues.$id,
+        },
+      },
+      {
+        onSuccess: () => {
+          router.refresh();
+        },
+      }
+    );
+  };
+
   return (
     <div className="flex flex-col gap-y-4">
       <DeleteDialog />
+      <ResestDialog />
       <Card className="w-full h-full border-none shadow-none">
         <CardHeader className="flex p-7 flex-row items-center gap-x-4 space-y-0">
           <Button
@@ -258,7 +288,7 @@ export const EditWorkspaceForm = ({
             </p>
             <div className="mt-4">
               <div className="flex items-center gap-x-2">
-                <Input disabled value={originalInviteURl} />
+                <Input readOnly value={originalInviteURl} />
                 <Button
                   className="size-12"
                   type="button"
@@ -274,9 +304,9 @@ export const EditWorkspaceForm = ({
               className="mt-6 w-fit ml-auto"
               size="sm"
               type="button"
-              disabled={isPending}
+              disabled={isPending || isResetPending}
               variant="destructive"
-              onClick={() => handleDelete()}
+              onClick={() => handleResetLink()}
             >
               Reset Invite Link
             </Button>
