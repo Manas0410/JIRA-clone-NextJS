@@ -24,6 +24,8 @@ import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Workspace } from "../types";
 import { useUpdateWorkspace } from "../api/use-update-workspace";
+import { useConfirm } from "@/hooks/use-confirm";
+import { useDeleteWorkspace } from "../api/use-delete-workspace";
 
 interface EditWorkspaceFormProps {
   onCancel?: () => void;
@@ -46,6 +48,34 @@ export const EditWorkspaceForm = ({
   });
 
   const { mutate, isPending } = useUpdateWorkspace();
+
+  const [DeleteDialog, ConfirmDelete] = useConfirm(
+    "Delete Workspace",
+    "Are you sure you want to delete this workspace?",
+    "destructive"
+  );
+
+  const { mutate: deleteWorkspace, isPending: isDeletePending } =
+    useDeleteWorkspace();
+
+  const handleDelete = async () => {
+    const ok = await ConfirmDelete();
+
+    if (!ok) return;
+
+    deleteWorkspace(
+      {
+        param: {
+          workspaceId: initialValues.$id,
+        },
+      },
+      {
+        onSuccess: () => {
+          router.push("/");
+        },
+      }
+    );
+  };
 
   const onSubmit = (values: z.infer<typeof updateWorkspaceSchema>) => {
     const finalValues = {
@@ -77,6 +107,7 @@ export const EditWorkspaceForm = ({
 
   return (
     <div className="flex flex-col gap-y-4">
+      <DeleteDialog />
       <Card className="w-full h-full border-none shadow-none">
         <CardHeader className="flex p-7 flex-row items-center gap-x-4 space-y-0">
           <Button
@@ -223,9 +254,7 @@ export const EditWorkspaceForm = ({
               type="button"
               disabled={isPending}
               variant="destructive"
-              onClick={() => {
-                // onDelete();
-              }}
+              onClick={() => handleDelete()}
             >
               Delete Workspace
             </Button>
