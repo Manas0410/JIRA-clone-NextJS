@@ -6,50 +6,86 @@ import { z } from "zod";
 import { getMember } from "../utils";
 import { DATABASE_ID, MEMBERS_ID } from "@/config";
 import { Query } from "node-appwrite";
+import { MemberRole } from "../types";
 
-const members = new Hono().get(
-  "/",
-  sessionMiddleware,
-  zValidator("query", z.object({ workspaceId: z.string() })),
-  async (c) => {
-    const { users } = await createAdminClient();
-    const dataBases = c.get("databases");
+const members = new Hono()
+  .get(
+    "/",
+    sessionMiddleware,
+    zValidator("query", z.object({ workspaceId: z.string() })),
+    async (c) => {
+      const { users } = await createAdminClient();
+      const dataBases = c.get("databases");
+      const user = c.get("user");
+      const { workspaceId } = c.req.valid("query");
+
+      const member = await getMember({
+        databases: dataBases,
+        workspaceId,
+        userId: user.$id,
+      });
+
+      if (!member) {
+        return c.json({ error: "Unauthorized" }, 401);
+      }
+
+      const members = await dataBases.listDocuments(DATABASE_ID, MEMBERS_ID, [
+        Query.equal("workspaceId", workspaceId),
+      ]);
+
+      const populatedMembers = await Promise.all(
+        members.documents.map(async (member) => {
+          const user = await users.get(member.userId);
+
+          return {
+            ...member,
+            name: user.name,
+            email: user.email,
+          };
+        })
+      );
+
+      return c.json({
+        data: {
+          ...members,
+          documents: populatedMembers,
+        },
+      });
+    }
+  )
+
+  // delete member
+  .delete("/:memberId", sessionMiddleware, async (c) => {
+    const { memberId } = c.req.param();
+    const databases = c.get("databases");
     const user = c.get("user");
-    const { workspaceId } = c.req.valid("query");
+
+    const memberToDelete = await databases.getDocument(
+      DATABASE_ID,
+      MEMBERS_ID,
+      memberId
+    );
+
+    const allMembersInWorkspace = await databases.listDocuments(
+      DATABASE_ID,
+      MEMBERS_ID,
+      [Query.equal("workspaceId", memberToDelete.workspaceId)]
+    );
 
     const member = await getMember({
-      databases: dataBases,
-      workspaceId,
+      databases,
+      workspaceId: memberToDelete.workspaceId,
       userId: user.$id,
     });
 
-    if (!member) {
+    if (!member) return c.json({ error: "Unauthorized" }, 401);
+
+    if (memberToDelete.$id === member.$id && member.role !== MemberRole.ADMIN) {
       return c.json({ error: "Unauthorized" }, 401);
     }
 
-    const members = await dataBases.listDocuments(DATABASE_ID, MEMBERS_ID, [
-      Query.equal("workspaceId", workspaceId),
-    ]);
-
-    const populatedMembers = await Promise.all(
-      members.documents.map(async (member) => {
-        const user = await users.get(member.userId);
-
-        return {
-          ...member,
-          name: user.name,
-          email: user.email,
-        };
-      })
-    );
-
-    return c.json({
-      data: {
-        ...members,
-        documents: populatedMembers,
-      },
-    });
-  }
-);
+    await databases.deleteDocument(DATABASE_ID, MEMBERS_ID, memberId);
+    return c.json({ data: { $id: memberToDelete.$id } });
+  });
 
 export default members;
