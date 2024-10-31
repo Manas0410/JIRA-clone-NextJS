@@ -4,38 +4,35 @@ import { client } from "@/lib/rpc";
 import { toast } from "sonner";
 
 type responseType = InferResponseType<
-  (typeof client.api.workspaces)[":workspaceId"]["$delete"],
+  (typeof client.api.members)[":memberId"]["$delete"],
   200
 >;
 type requestType = InferRequestType<
-  (typeof client.api.workspaces)[":workspaceId"]["$delete"]
+  (typeof client.api.members)[":memberId"]["$delete"]
 >;
 
-export const useDeleteWorkspace = () => {
+export const useDeleteMember = () => {
   const queryClient = useQueryClient();
 
   const mutation = useMutation<responseType, Error, requestType>({
     mutationFn: async ({ param }) => {
-      const response = await client.api.workspaces[":workspaceId"]["$delete"]({
+      const response = await client.api.members[":memberId"]["$delete"]({
         param,
       });
       if (!response.ok) {
-        throw new Error("failed to delete workspace");
+        throw new Error("failed to delete member");
       }
 
       return await response.json();
     },
-    onSuccess: ({ data }) => {
-      toast.success("Workspace deleted");
+    onSuccess: () => {
+      toast.success("Member deleted");
       queryClient.invalidateQueries({
-        queryKey: ["workspaces"],
-      });
-      queryClient.invalidateQueries({
-        queryKey: ["workspaces", data.$id],
+        queryKey: ["members"],
       });
     },
     onError: () => {
-      toast.error("Failed to delete workspace");
+      toast.error("Failed to delete member ");
     },
   });
 
