@@ -3,7 +3,10 @@ import { InferRequestType, InferResponseType } from "hono";
 import { client } from "@/lib/rpc";
 import { toast } from "sonner";
 
-type responseType = InferResponseType<(typeof client.api.projects)["$post"]>;
+type responseType = InferResponseType<
+  (typeof client.api.projects)["$post"],
+  200
+>;
 type requestType = InferRequestType<(typeof client.api.projects)["$post"]>;
 
 export const useCreateProject = () => {
