@@ -58,7 +58,6 @@ const projects = new Hono()
         ID.unique(),
         {
           name,
-          userid: user.$id,
           imageUrl: uploadedImageUrl,
           workspaceId,
         }
