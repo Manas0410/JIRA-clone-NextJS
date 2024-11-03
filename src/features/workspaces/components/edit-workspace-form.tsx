@@ -92,9 +92,8 @@ export const EditWorkspaceForm = ({
         },
       },
       {
-        onSuccess: ({ data }) => {
+        onSuccess: () => {
           form.reset();
-          window.location.href = `/`;
         },
       }
     );
@@ -129,18 +128,11 @@ export const EditWorkspaceForm = ({
 
     if (!ok) return;
 
-    resetInviteCode(
-      {
-        param: {
-          workspaceId: initialValues.$id,
-        },
+    resetInviteCode({
+      param: {
+        workspaceId: initialValues.$id,
       },
-      {
-        onSuccess: () => {
-          router.refresh();
-        },
-      }
-    );
+    });
   };
 
   return (
