@@ -19,7 +19,7 @@ export default function DashboardLayout({ children }: LayoutProps) {
         <div className="lg:pl-[264px] h-full w-full ">
           <div className="mx-auto max-w-screen-2xl h-full">
             <Navbar />
-            <main>{children}</main>
+            <main className="py-4 px-8">{children}</main>
           </div>
         </div>
       </div>
