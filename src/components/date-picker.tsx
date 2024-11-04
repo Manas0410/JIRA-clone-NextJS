@@ -3,10 +3,9 @@
 import * as React from "react";
 import { format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
-import { Popover, PopoverTrigger } from "./ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Button } from "./ui/button";
 import { cn } from "@/lib/utils";
-import { PopoverContent } from "@radix-ui/react-popover";
 import { Calendar } from "./ui/calendar";
 
 interface DatePickerProps {
@@ -22,8 +21,6 @@ export const DatePicker: React.FC<DatePickerProps> = ({
   className,
   placeholder = "Select a date",
 }) => {
-  const [inputValue, setInputValue] = React.useState("");
-
   return (
     <Popover>
       <PopoverTrigger asChild>
