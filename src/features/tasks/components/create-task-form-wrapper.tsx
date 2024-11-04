@@ -3,6 +3,7 @@ import { useGetMembers } from "@/features/members/api/use-get-members";
 import { useGetProjects } from "@/features/projects/api/use-get-projects";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 import { Loader } from "lucide-react";
+import { CreateTaskForm } from "./create-tasks-form";
 
 interface crreateTasksFormWrapperProps {
   onCancel: () => void;
@@ -43,9 +44,10 @@ export const CreateTaskFormWrapper = ({
   }
 
   return (
-    <div>
-      {JSON.stringify(projectOptions)}
-      {JSON.stringify(memberOptioins)}
-    </div>
+    <CreateTaskForm
+      onCancel={onCancel}
+      projectOptions={projectOptions ?? []}
+      memberOptions={memberOptioins ?? []}
+    />
   );
 };
