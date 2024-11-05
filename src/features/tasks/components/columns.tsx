@@ -2,26 +2,101 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { Task } from "../types";
+import { ArrowUpDown } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { ProjectAvatar } from "@/features/projects/components/projects-avatar";
+import { MemberAvatar } from "@/features/members/components/member-avatar";
+import { TaskDate } from "./task-date";
 
 export const columns: ColumnDef<Task>[] = [
   {
     accessorKey: "name",
-    header: "Task Name",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Task Name
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const name = row.original.name;
+      return <p className="line-clamp-1">{name}</p>;
+    },
   },
-  //   {
-  //     accessorKey: "status",
-  //     header: "Status",
-  //   },
-  //   {
-  //     accessorKey: "project",
-  //     header: "Project",
-  //   },
-  //   {
-  //     accessorKey: "assignee",
-  //     header: "Assignee",
-  //   },
-  //   {
-  //     accessorKey: "dueDate",
-  //     header: "Due Date",
-  //   },
+  {
+    accessorKey: "project",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Project
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const project = row.original.project;
+      return (
+        <div className="flex items-center gap-x-2 text-sm font-medium">
+          <ProjectAvatar
+            className="size-6"
+            name={project.name}
+            image={project.imageUrl}
+          />
+          <p className="line-clamp-1">{project.name}</p>
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "asignee",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Assignee
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const asignee = row.original.asignee;
+      return (
+        <div className="flex items-center gap-x-2 text-sm font-medium">
+          <MemberAvatar
+            className="size-6"
+            fallbackClassname="text-xs"
+            name={asignee.name}
+          />
+          <p className="line-clamp-1">{asignee.name}</p>
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "dueDate",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Due Date
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const duedate = row.original.dueDate;
+      return <TaskDate value={duedate} />;
+    },
+  },
 ];

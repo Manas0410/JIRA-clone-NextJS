@@ -30,7 +30,7 @@ const ProjectIdPage = async ({ params }: ProjectIdPageProps) => {
         <div className="flex items-center gap-x-2">
           <ProjectAvatar
             name={initialValues.name}
-            image={initialValues.avatarUrl}
+            image={initialValues.imageUrl}
             className="size-8"
           />
           <p className="text-lg font-bold">{initialValues.name}</p>
