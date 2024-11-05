@@ -60,6 +60,7 @@ export const DataFilters = ({ hideProjectFilter }: DataFiltersProps) => {
   };
 
   if (isLoading) return null;
+
   return (
     <div className="flex flex-col lg:flex-row gap-2">
       <Select
@@ -123,6 +124,7 @@ export const DataFilters = ({ hideProjectFilter }: DataFiltersProps) => {
         </SelectContent>
       </Select>
       <DatePicker
+        // disabled={isLoading} need tp put switcher loafding
         placeholder="Due Date"
         className="h-8 w-full lg:w-auto"
         value={dueDate ? new Date(dueDate) : undefined}

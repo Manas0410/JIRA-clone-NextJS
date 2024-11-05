@@ -13,6 +13,7 @@ interface DatePickerProps {
   onChange: (date: Date) => void;
   className?: string;
   placeholder?: string;
+  disabled?: boolean;
 }
 
 export const DatePicker: React.FC<DatePickerProps> = ({
@@ -20,6 +21,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
   onChange,
   className,
   placeholder = "Select a date",
+  disabled,
 }) => {
   return (
     <Popover>
@@ -43,6 +45,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
           selected={value}
           onSelect={(date) => onChange(date as Date)}
           initialFocus
+          disabled={disabled}
         />
       </PopoverContent>
     </Popover>
