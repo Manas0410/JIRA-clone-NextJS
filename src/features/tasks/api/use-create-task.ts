@@ -13,19 +13,19 @@ export const useCreateTask = () => {
     mutationFn: async ({ json }) => {
       const response = await client.api.tasks["$post"]({ json });
       if (!response.ok) {
-        throw new Error("failed to create project");
+        throw new Error("failed to create task");
       }
 
       return await response.json();
     },
     onSuccess: () => {
-      toast.success("Project created");
+      toast.success("Task created");
       queryClient.invalidateQueries({
         queryKey: ["tasks"],
       });
     },
     onError: () => {
-      toast.error("Failed to create project");
+      toast.error("Failed to create task");
     },
   });
 
