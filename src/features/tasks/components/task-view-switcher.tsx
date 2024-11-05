@@ -5,11 +5,27 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PlusIcon } from "lucide-react";
 import { useCreateTaskstModal } from "../hooks/use-create-tasks-modal";
+import { useGetTasks } from "../api/use-get-task";
+import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
+import { useQueryState } from "nuqs";
 
 export const TaskViewSwitcher = () => {
+  const [View, setView] = useQueryState("taskview", { defaultValue: "table" });
+
+  const workspaceId = useWorkspaceId();
+
+  const { data: tasks, isLoading: isTasksLoading } = useGetTasks({
+    workspaceId,
+  });
+
   const { open } = useCreateTaskstModal();
+
   return (
-    <Tabs className="flex-1 w-full border rounded-lg">
+    <Tabs
+      defaultValue={View}
+      onValueChange={setView}
+      className="flex-1 w-full border rounded-lg"
+    >
       <div className="flex flex-col overflow-auto h-full p-4">
         <div className="flex flex-col gap-y-2 lg:flex-row justify-between items-center">
           <TabsList className="w-full lg:w-auto">
@@ -33,7 +49,7 @@ export const TaskViewSwitcher = () => {
         <DottedSeperator className="my-4" />
         <>
           <TabsContent value="table" className="mt-0">
-            Table
+            {JSON.stringify(tasks)}
           </TabsContent>
 
           <TabsContent value="kanban" className="mt-0">
