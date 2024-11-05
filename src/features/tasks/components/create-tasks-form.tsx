@@ -61,6 +61,7 @@ export const CreateTaskForm = ({
       {
         onSuccess: ({ data }) => {
           form.reset();
+          onCancel?.();
         },
       }
     );

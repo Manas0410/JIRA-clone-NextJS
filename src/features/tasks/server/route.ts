@@ -124,8 +124,15 @@ const tasks = new Hono()
     async (c) => {
       const user = c.get("user");
       const databases = c.get("databases");
-      const { name, status, workspaceId, projectId, dueDate, asigneeId } =
-        c.req.valid("json");
+      const {
+        name,
+        status,
+        workspaceId,
+        projectId,
+        dueDate,
+        asigneeId,
+        position,
+      } = c.req.valid("json");
 
       const member = await getMember({
         databases,
@@ -143,7 +150,7 @@ const tasks = new Hono()
         [
           Query.equal("status", status),
           Query.equal("workspaceId", workspaceId),
-          Query.orderAsc("$position"),
+          // Query.orderAsc("$position"),  // need to be checked
           Query.limit(1),
         ]
       );
