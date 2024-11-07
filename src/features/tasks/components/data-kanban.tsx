@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { Task, TaskStatus } from "../types";
 import {
   DragDropContext,
@@ -48,7 +48,79 @@ export const DataKanban = ({ data }: DataKanbanProps) => {
     return initialTasks;
   });
 
-  const handleDragEnd = (result: DropResult) => {};
+  const handleDragEnd = useCallback((result: DropResult) => {
+    if (!result.destination) {
+      return;
+    }
+
+    const { source, destination } = result;
+    const sourceStatus = source.droppableId as TaskStatus;
+    const destinationStatus = destination.droppableId as TaskStatus;
+
+    let updatesPayload: { $id: string; status: TaskStatus; position: number }[];
+
+    setTasks((prevTasks) => {
+      const newTasks = { ...prevTasks };
+
+      const sourceColumn = [...newTasks[sourceStatus]];
+      const [movedTask] = sourceColumn.splice(source.index, 1);
+
+      if (!movedTask) {
+        console.error("movedTask not found");
+        return prevTasks;
+      }
+
+      const updateMovedTask =
+        sourceStatus !== destinationStatus
+          ? { ...movedTask, status: destinationStatus }
+          : movedTask;
+
+      newTasks[sourceStatus] = sourceColumn;
+
+      const destColumn = [...newTasks[destinationStatus]];
+      destColumn.splice(destination.index, 0, updateMovedTask);
+
+      newTasks[destinationStatus] = destColumn;
+
+      updatesPayload = [];
+
+      updatesPayload.push({
+        $id: updateMovedTask.$id,
+        status: destinationStatus,
+        position: Math.min((destination.index + 1) * 1000, 1_000_000),
+      });
+
+      newTasks[destinationStatus].forEach((task, index) => {
+        if (task && task.$id !== updateMovedTask.$id) {
+          const newPosition = Math.min((index + 1) * 1000, 1_000_000);
+          if (task.position !== newPosition) {
+            updatesPayload.push({
+              $id: task.$id,
+              position: newPosition,
+              status: destinationStatus,
+            });
+          }
+        }
+      });
+
+      if (sourceStatus !== destinationStatus) {
+        newTasks[sourceStatus].forEach((task, index) => {
+          if (task) {
+            const newPosition = Math.min((index + 1) * 1000, 1_000_000);
+            if (task.position !== newPosition) {
+              updatesPayload.push({
+                $id: task.$id,
+                position: newPosition,
+                status: sourceStatus,
+              });
+            }
+          }
+        });
+      }
+
+      return newTasks;
+    });
+  }, []);
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
