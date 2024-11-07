@@ -6,6 +6,7 @@ import {
   Draggable,
   DropResult,
 } from "@hello-pangea/dnd";
+import { KanbanColumnHeader } from "./kanban-column-header";
 
 interface DataKanbanProps {
   data: Task[];
@@ -46,11 +47,22 @@ export const DataKanban = ({ data }: DataKanbanProps) => {
     return initialTasks;
   });
 
+  const handleDragEnd = (result: DropResult) => {};
+
   return (
-    <div>
-      <div>TODO</div>
-      <div>IN PROGRESS</div>
-      <div>DONE</div>
-    </div>
+    <DragDropContext onDragEnd={handleDragEnd}>
+      <div className="flex overflow-x-auto">
+        {boards.map((board) => {
+          return (
+            <div
+              key={board}
+              className="flex-1 mx-2 bg-muted p-1.5 rounded-md min-w-[200px]"
+            >
+              <KanbanColumnHeader board={board} count={Tasks[board].length} />
+            </div>
+          );
+        })}
+      </div>
+    </DragDropContext>
   );
 };
