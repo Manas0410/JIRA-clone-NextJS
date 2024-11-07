@@ -9,6 +9,7 @@ import { useDeleteTask } from "../api/use-delete-task";
 import { useConfirm } from "@/hooks/use-confirm";
 import { useRouter } from "next/navigation";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
+import { useUpdateTaskstModal } from "../hooks/use-update-task-modal";
 
 interface TaskActionsProps {
   id: string;
@@ -20,6 +21,8 @@ export function TaskActions({ id, projectId, children }: TaskActionsProps) {
   const router = useRouter();
 
   const workspaceId = useWorkspaceId();
+
+  const { open } = useUpdateTaskstModal();
 
   const { mutate, isPending } = useDeleteTask();
 
@@ -68,7 +71,9 @@ export function TaskActions({ id, projectId, children }: TaskActionsProps) {
             Open Project
           </DropdownMenuItem>
           <DropdownMenuItem
-            onClick={() => {}}
+            onClick={() => {
+              open(id);
+            }}
             className="font-medium p-[10px]"
             disabled={false}
           >

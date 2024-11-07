@@ -16,9 +16,7 @@ import {
 import { DottedSeperator } from "@/components/dotted-seperator";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 import { DatePicker } from "@/components/date-picker";
 import {
   Select,
@@ -30,7 +28,6 @@ import {
 import { MemberAvatar } from "@/features/members/components/member-avatar";
 import { Task, TaskStatus } from "../types";
 import { ProjectAvatar } from "@/features/projects/components/projects-avatar";
-import { useUpdate } from "react-use";
 import { useUpdateTask } from "../api/use-update-task";
 
 interface EditTaskFormProps {
@@ -46,9 +43,6 @@ export const EditTaskForm = ({
   memberOptions,
   initialValues,
 }: EditTaskFormProps) => {
-  const router = useRouter();
-  const workspaceId = useWorkspaceId();
-
   const form = useForm<z.infer<typeof createTaskSchema>>({
     resolver: zodResolver(
       createTaskSchema.omit({ workspaceId: true, description: true })

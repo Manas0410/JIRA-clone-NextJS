@@ -215,16 +215,8 @@ const tasks = new Hono()
     async (c) => {
       const user = c.get("user");
       const databases = c.get("databases");
-      const {
-        name,
-        status,
-        workspaceId,
-        projectId,
-        dueDate,
-        asigneeId,
-        position,
-        description,
-      } = c.req.valid("json");
+      const { name, status, projectId, dueDate, asigneeId, description } =
+        c.req.valid("json");
 
       const { taskId } = c.req.param();
 
@@ -291,10 +283,10 @@ const tasks = new Hono()
       task.projectId
     );
 
-    const member = await databases.getDocument<Project>(
+    const member = await databases.getDocument(
       DATABASE_ID,
       MEMBERS_ID,
-      task.assigneeId
+      task.asigneeId
     );
 
     const user = await users.get(member.userId);

@@ -13,7 +13,7 @@ export default function StandAloneLayout({ children }: standAloneLayoutProps) {
           <Link href="/">
             <h1 className="text-xl font-bold flex items-center gap-2">
               <Image src="/logo.svg" alt="Logo" width={35} height={35} />{" "}
-              <p>SMxCONTROLLER</p>
+              <p>CONTROLLER</p>
             </h1>
           </Link>
           <UserButton />
