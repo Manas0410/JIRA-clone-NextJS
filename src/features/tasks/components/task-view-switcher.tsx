@@ -16,6 +16,7 @@ import { DataKanban } from "./data-kanban";
 import { useCallback } from "react";
 import { TaskStatus } from "../types";
 import { useBulkUpdateTask } from "../api/use-bulk-update-task";
+import { DataCalendar } from "./data-calendar";
 
 export const TaskViewSwitcher = () => {
   const [{ projectId, status, dueDate, asigneeId, search }] = useTaskFilter();
@@ -89,7 +90,7 @@ export const TaskViewSwitcher = () => {
             </TabsContent>
 
             <TabsContent value="calendar" className="mt-0">
-              Calendar
+              <DataCalendar data={tasks?.documents ?? []} />
             </TabsContent>
           </>
         )}
