@@ -3,6 +3,8 @@ import { TaskStatus } from "../types";
 import { cn } from "@/lib/utils";
 import { MemberAvatar } from "@/features/members/components/member-avatar";
 import { ProjectAvatar } from "@/features/projects/components/projects-avatar";
+import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
+import { useRouter } from "next/navigation";
 
 interface EventCardProps {
   id: string;
@@ -27,6 +29,13 @@ export const EventCard = ({
   project,
   status,
 }: EventCardProps) => {
+  const workspaceId = useWorkspaceId();
+  const router = useRouter();
+
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+    router.push(`/workspaces/${workspaceId}/tasks/${id}`);
+  };
   return (
     <div className="mx-2">
       <div
