@@ -21,7 +21,7 @@ const routes = [
   },
   {
     name: "My Tasks",
-    href: "/my-tasks",
+    href: "/tasks",
     icon: GoCheckCircle,
     activeIcon: GoCheckCircleFill,
   },
