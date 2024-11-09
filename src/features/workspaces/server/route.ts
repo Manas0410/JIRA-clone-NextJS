@@ -70,6 +70,26 @@ const workspaces = new Hono()
     return c.json({ data: workspace });
   })
 
+  // workspace join
+  .get("/:workspaceId/info", sessionMiddleware, async (c) => {
+    const databases = c.get("databases");
+    const { workspaceId } = c.req.param();
+
+    const workspace = await databases.getDocument<Workspace>(
+      DATABASE_ID,
+      WORKSPACES_ID,
+      workspaceId
+    );
+
+    return c.json({
+      data: {
+        $id: workspace.$id,
+        name: workspace.name,
+        imageUrl: workspace.imageUrl,
+      },
+    });
+  })
+
   //create workspace
   .post(
     "/",
