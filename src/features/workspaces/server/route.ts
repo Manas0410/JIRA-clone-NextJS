@@ -61,7 +61,7 @@ const workspaces = new Hono()
       return c.json({ data: null });
     }
 
-    const workspace = await databases.getDocument(
+    const workspace = await databases.getDocument<Workspace>(
       DATABASE_ID,
       WORKSPACES_ID,
       workspaceId
