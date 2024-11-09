@@ -6,7 +6,7 @@ import { DottedSeperator } from "./dotted-seperator";
 export const Analytics = ({ data }: ProjectAnalyticsResponseType) => {
   return (
     <ScrollArea className="w-full border rounded-lg whitespace-normal shrink-0">
-      <div className="w-full flex flow-row py-2">
+      <div className="w-full flex flow-row py-2 overflow-auto">
         <div className="flex flex-1 items-center">
           <AnalyticsCard
             title="Total Tasks"
@@ -40,6 +40,15 @@ export const Analytics = ({ data }: ProjectAnalyticsResponseType) => {
             value={data.overDueTaskCount}
             variant={data.overDueTaskDifference > 0 ? "up" : "down"}
             increaseValue={data.overDueTaskDifference}
+          />
+          <DottedSeperator direction="vertical" className=" h-full " />
+        </div>
+        <div className="flex flex-1 items-center">
+          <AnalyticsCard
+            title="Incomplete Tasks"
+            value={data.inCompletedTaskCount}
+            variant={data.inCompletedTaskDifference > 0 ? "up" : "down"}
+            increaseValue={data.inCompletedTaskDifference}
           />
           <DottedSeperator direction="vertical" className=" h-full " />
         </div>
