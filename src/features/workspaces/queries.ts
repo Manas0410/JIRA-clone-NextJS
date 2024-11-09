@@ -1,7 +1,5 @@
 import { Query } from "node-appwrite";
 import { DATABASE_ID, MEMBERS_ID, WORKSPACES_ID } from "@/config";
-import { getMember } from "../members/utils";
-import { Workspace } from "./types";
 import { createSessionClient } from "@/lib/appwrite";
 
 export const getWorkspaces = async () => {
@@ -32,63 +30,5 @@ export const getWorkspaces = async () => {
   } catch (err) {
     console.log("catch", err);
     return { documents: [], total: 0 };
-  }
-};
-
-export const getWorkspace = async ({
-  workspaceId,
-}: {
-  workspaceId: string;
-}) => {
-  try {
-    console.log("get current");
-
-    const { dataBases, account } = await createSessionClient();
-
-    const user = await account.get();
-
-    const member = await getMember({
-      databases: dataBases,
-      workspaceId,
-      userId: user.$id,
-    });
-
-    if (!member) return null;
-
-    const workspace = await dataBases.getDocument<Workspace>(
-      DATABASE_ID,
-      WORKSPACES_ID,
-      workspaceId
-    );
-
-    return workspace;
-  } catch (err) {
-    console.log("catch", err);
-    return null;
-  }
-};
-
-export const getWorkspaceInfo = async ({
-  workspaceId,
-}: {
-  workspaceId: string;
-}) => {
-  try {
-    console.log("get current");
-
-    const { dataBases } = await createSessionClient();
-
-    const workspace = await dataBases.getDocument<Workspace>(
-      DATABASE_ID,
-      WORKSPACES_ID,
-      workspaceId
-    );
-
-    return {
-      name: workspace.name,
-    };
-  } catch (err) {
-    console.log("catch", err);
-    return null;
   }
 };
