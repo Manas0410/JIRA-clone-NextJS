@@ -3,6 +3,7 @@
 import { PageError } from "@/components/page-error";
 import { PageLoader } from "@/components/page-loader";
 import { useGetTask } from "@/features/tasks/api/use-get-task";
+import { TaskBreadcrumbs } from "@/features/tasks/components/task-breadcrumbs";
 import { useTaskId } from "@/features/tasks/hooks/use-taskid";
 
 export const TaskIdClient = () => {
@@ -15,7 +16,11 @@ export const TaskIdClient = () => {
   }
 
   if (!data) {
-    return <PageError />;
+    return <PageError message="task not found" />;
   }
-  return <div></div>;
+  return (
+    <div className="flex flex-col">
+      <TaskBreadcrumbs project={data.project} task={data} />
+    </div>
+  );
 };
