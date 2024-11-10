@@ -19,6 +19,8 @@ import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import { Project } from "@/features/projects/types";
 import { ProjectAvatar } from "@/features/projects/components/projects-avatar";
+import { Member } from "@/features/members/types";
+import { MemberAvatar } from "@/features/members/components/member-avatar";
 
 const Client = () => {
   const workspaceId = useWorkspaceId();
@@ -154,6 +156,53 @@ export const ProjectList = ({ data, total }: ProjectlistProps) => {
           ))}
           <li className="text-sm text-muted-foreground text-center hidden first-of-type:block ">
             No Projects found
+          </li>
+        </ul>
+      </div>
+    </div>
+  );
+};
+
+interface MemberlistProps {
+  data: Member[];
+  total: number;
+}
+
+export const MemberList = ({ data, total }: MemberlistProps) => {
+  const workspaceId = useWorkspaceId();
+
+  return (
+    <div className="flex flex-col gap-y-4 col-span-1">
+      <div className="bg-white border rounded-lg p-4">
+        <div className="flex items-center justify-between">
+          <p className="text-lg font-semibold">Members ({total})</p>
+          <Button asChild variant={"secondary"} size={"icon"}>
+            <Link href={`/workspaces/${workspaceId}/members`}>
+              <SettingsIcon className="size-4 text-neutral-400" />
+            </Link>
+          </Button>
+        </div>
+        <DottedSeperator className="my-4 h-max" />
+        <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {data.map((member) => (
+            <li key={member.$id}>
+              <Card className="shadow-none rounded-lg ">
+                <CardContent className="p-3  flex flex-col items-center  gap-x-2">
+                  <MemberAvatar className="size-12" name={member.name} />
+                  <div className="flex flex-col items-center overflow-hidden">
+                    <p className="text-lg font-medium line-clamp-1">
+                      {member.name}
+                    </p>
+                    <p className="text-sm text-muted-foreground line-clamp-1">
+                      {member.email}
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            </li>
+          ))}
+          <li className="text-sm text-muted-foreground text-center hidden first-of-type:block ">
+            No Members found
           </li>
         </ul>
       </div>
