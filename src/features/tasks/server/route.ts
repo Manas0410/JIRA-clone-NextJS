@@ -286,7 +286,7 @@ const tasks = new Hono()
 
     const assignee = {
       ...member,
-      name: user.name,
+      name: user.name || user.email,
       email: user.email,
     };
 

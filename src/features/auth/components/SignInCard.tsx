@@ -19,7 +19,7 @@ import {
 import Link from "next/link";
 import { SigninSchema } from "../schemas";
 import { useLogin } from "../api/use-sign-in";
-import { signUpWithGithub } from "@/lib/oauth";
+import { signUpWithGithub, signUpWithGoogle } from "@/lib/oauth";
 
 export const SignInCard = () => {
   const form = useForm<z.infer<typeof SigninSchema>>({
@@ -92,6 +92,7 @@ export const SignInCard = () => {
           size={"lg"}
           variant={"secondary"}
           className="w-full "
+          onClick={() => signUpWithGoogle()}
         >
           Sign In With Google
           <FcGoogle className="mr-2 size-5" />
@@ -101,7 +102,7 @@ export const SignInCard = () => {
           size={"lg"}
           variant={"secondary"}
           className="w-full "
-          onClick={signUpWithGithub}
+          onClick={() => signUpWithGithub()}
         >
           Sign In With Github
           <FaGithub className="mr-2 size-5" />

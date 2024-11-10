@@ -42,7 +42,7 @@ export const UserButton = () => {
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent
-        className="w-60"
+        className="w-60 p-4"
         align="end"
         side="bottom"
         sideOffset={10}
@@ -57,7 +57,12 @@ export const UserButton = () => {
             <p className="text-sm text-neutral-900 fomt-medium">
               {name || "user"}
             </p>
-            <p className="text-sm text-neutral-500">{email}</p>
+            <p
+              title={email}
+              className="text-sm text-neutral-500 truncate p-2 w-full max-w-[206px]"
+            >
+              {email}
+            </p>
           </div>
           <DottedSeperator className="mb-1" />
           <DropdownMenuItem
