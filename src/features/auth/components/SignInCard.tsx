@@ -19,6 +19,7 @@ import {
 import Link from "next/link";
 import { SigninSchema } from "../schemas";
 import { useLogin } from "../api/use-sign-in";
+import { signUpWithGithub } from "@/lib/oauth";
 
 export const SignInCard = () => {
   const form = useForm<z.infer<typeof SigninSchema>>({
@@ -100,6 +101,7 @@ export const SignInCard = () => {
           size={"lg"}
           variant={"secondary"}
           className="w-full "
+          onClick={signUpWithGithub}
         >
           Sign In With Github
           <FaGithub className="mr-2 size-5" />
