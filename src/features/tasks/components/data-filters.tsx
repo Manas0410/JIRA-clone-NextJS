@@ -13,7 +13,6 @@ import { FolderIcon, ListCheckIcon, UserIcon } from "lucide-react";
 import { TaskStatus } from "../types";
 import { useTaskFilter } from "../hooks/use-task-filter";
 import { DatePicker } from "@/components/date-picker";
-import { set } from "date-fns";
 
 interface DataFiltersProps {
   hideProjectFilter?: boolean;
@@ -40,7 +39,7 @@ export const DataFilters = ({ hideProjectFilter }: DataFiltersProps) => {
     label: member.name,
   }));
 
-  const [{ projectId, status, dueDate, asigneeId, search }, setFilters] =
+  const [{ projectId, status, dueDate, asigneeId }, setFilters] = //,search
     useTaskFilter();
 
   const onStatusChange = (value: string) => {
@@ -53,10 +52,6 @@ export const DataFilters = ({ hideProjectFilter }: DataFiltersProps) => {
 
   const onProjectChange = (value: string) => {
     setFilters({ projectId: value === "all" ? null : (value as string) });
-  };
-
-  const onSearchChange = (value: string) => {
-    setFilters({ search: value === "all" ? null : (value as string) });
   };
 
   if (isLoading) return null;

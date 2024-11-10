@@ -14,7 +14,6 @@ export const ResponsiveModal = ({
   onOpenChange,
 }: ResponsiveModalProps) => {
   const isDesktop = useMedia("(min-width: 1024px)", true);
-  const isMobile = useMedia("(max-width: 768px)");
 
   if (isDesktop)
     return (

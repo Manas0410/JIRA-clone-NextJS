@@ -5,11 +5,12 @@ import { MemberAvatar } from "@/features/members/components/member-avatar";
 import { ProjectAvatar } from "@/features/projects/components/projects-avatar";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 import { useRouter } from "next/navigation";
+import { Member } from "@/features/members/types";
 
 interface EventCardProps {
   id: string;
   title: string;
-  asignee: any;
+  asignee: Member;
   project: Project;
   status: TaskStatus;
 }
@@ -37,7 +38,7 @@ export const EventCard = ({
     router.push(`/workspaces/${workspaceId}/tasks/${id}`);
   };
   return (
-    <div className="mx-2">
+    <div className="mx-2" onClick={handleClick}>
       <div
         className={cn(
           "p-1.5 text-xs bg-white text-primary border rounded-md border-l-4 flex flex-col gap-y-1.5 cursor-pointer hover:opacity-75 transition ",

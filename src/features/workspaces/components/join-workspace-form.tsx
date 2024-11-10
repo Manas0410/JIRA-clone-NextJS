@@ -12,7 +12,6 @@ import {
 import Link from "next/link";
 import { useJoinWorkspaceWithCode } from "../api/use-join-with-code";
 import { useInviteCode } from "../hooks/use-invite-code";
-import { use } from "react";
 import { useWorkspaceId } from "../hooks/use-workspace-id";
 import { useRouter } from "next/navigation";
 
@@ -49,7 +48,7 @@ export const JoinWorkspaceForm = ({
       <CardHeader className="p-7">
         <CardTitle className="text-xl font-bold">Join a workspace</CardTitle>
         <CardDescription>
-          You've been invited to join <strong>{initialValues.name}</strong>
+          You&apos;ve been invited to join <strong>{initialValues.name}</strong>
         </CardDescription>
       </CardHeader>
       <div className="p-7">

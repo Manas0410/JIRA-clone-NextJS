@@ -16,7 +16,6 @@ import {
 import { DottedSeperator } from "@/components/dotted-seperator";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 import { useCreateTask } from "../api/use-create-task";
@@ -43,7 +42,6 @@ export const CreateTaskForm = ({
   projectOptions,
   memberOptions,
 }: CreateTaskFormProps) => {
-  const router = useRouter();
   const workspaceId = useWorkspaceId();
 
   const form = useForm<z.infer<typeof createTaskSchema>>({
@@ -59,7 +57,7 @@ export const CreateTaskForm = ({
     mutate(
       { json: { ...values, workspaceId } },
       {
-        onSuccess: ({ data }) => {
+        onSuccess: () => {
           form.reset();
           onCancel?.();
         },

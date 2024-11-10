@@ -2,7 +2,7 @@ import { getCurrent } from "@/features/auth/queries";
 import { CreateWorkspaceForm } from "@/features/workspaces/components/create-workspace-form";
 import { redirect } from "next/navigation";
 
-export const WorkspaceCreatePage = async () => {
+const WorkspaceCreatePage = async () => {
   const user = await getCurrent();
   if (!user) redirect("/sign-in");
 

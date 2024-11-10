@@ -61,7 +61,7 @@ export const EditTaskForm = ({
     mutate(
       { json: values, param: { taskId: initialValues.$id } },
       {
-        onSuccess: ({ data }) => {
+        onSuccess: () => {
           form.reset();
           onCancel?.();
         },

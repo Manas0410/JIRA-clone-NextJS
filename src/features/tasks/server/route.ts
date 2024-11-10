@@ -124,15 +124,8 @@ const tasks = new Hono()
     async (c) => {
       const user = c.get("user");
       const databases = c.get("databases");
-      const {
-        name,
-        status,
-        workspaceId,
-        projectId,
-        dueDate,
-        asigneeId,
-        position,
-      } = c.req.valid("json");
+      const { name, status, workspaceId, projectId, dueDate, asigneeId } =
+        c.req.valid("json");
 
       const member = await getMember({
         databases,
